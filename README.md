@@ -64,33 +64,24 @@ Adafruit BusIO.h, Adafruit LiquidCrystal.h, Adafruit MCP23017.h: Biblioteci auxi
 
 ## Descrierea Logică a Codului
 
-- Programul implementează următoarele funcționalități logice: 
+Programul implementează următoarele funcționalități logice: 
 
-Citirea Tastaturii Matriceale: Utilizează biblioteca Keypad pentru a detecta apăsările de taste și a construi codul introdus de utilizator. 
-
-Autentificarea RFID: Citește UID-ul cardurilor RFID detectate și îl compară cu un UID predefinit (authorizedCard1). 
-
-Controlul LED-urilor și Buzzer-ului: Aprinde LED-ul verde (greenLed) și activează buzzer-ul la acces permis, sau aprinde LED-ul albastru (blueLed) și activează buzzer-ul pentru acces respins. 
-
-Detectarea Mișcării cu PIR: Senzorul PIR monitorizează continuu zona și trimite semnale către Arduino pentru a activa/dezactiva sistemul, deși această parte specifică de integrare nu este detaliată în snippetul de cod furnizat, ci este menționată în descrierea generală. 
-
-Resetarea Codului: Codul introdus de utilizator poate fi resetat folosind tasta '*'. 
+- Citirea Tastaturii Matriceale: Utilizează biblioteca Keypad pentru a detecta apăsările de taste și a construi codul introdus de utilizator. 
+- Autentificarea RFID: Citește UID-ul cardurilor RFID detectate și îl compară cu un UID predefinit (authorizedCard1). 
+- Controlul LED-urilor și Buzzer-ului: Aprinde LED-ul verde (greenLed) și activează buzzer-ul la acces permis, sau aprinde LED-ul albastru (blueLed) și activează buzzer-ul pentru acces respins. 
+- Detectarea Mișcării cu PIR: Senzorul PIR monitorizează continuu zona și trimite semnale către Arduino pentru a activa/dezactiva sistemul, deși această parte specifică de integrare nu este detaliată în snippetul de cod furnizat, ci este menționată în descrierea generală. 
+- Resetarea Codului: Codul introdus de utilizator poate fi resetat folosind tasta '*'. 
 
 ---
 
 ## Rulare și Utilizare
 
-Instalați Arduino IDE: Asigurați-vă că aveți mediul de dezvoltare Arduino instalat.
-
-Instalați Bibliotecile: Descărcați și instalați bibliotecile Keypad, MFRC522 și LiquidCrystal_I2C (și celelalte dacă sunt necesare pentru configurația completă a sistemului dvs.) prin Managerul de Biblioteci din Arduino IDE. 
-
-Conectați Hardware-ul: Realizați conexiunile conform schemei electrice (Fritzing).
-
-Încărcați Codul: Copiați codul sursă în Arduino IDE și încărcați-l pe placa Arduino Plusivo.
-
-Monitor Serial: Deschideți Monitorul Serial în Arduino IDE (cu baud rate 9600) pentru a vizualiza mesajele de sistem și starea interfonului. 
-
-Interacțiune: Sistemul este activat la pornire. Puteți introduce un cod PIN (implicit 1234) sau utiliza un card RFID autorizat pentru a testa accesul. 
+1. Instalați Arduino IDE: Asigurați-vă că aveți mediul de dezvoltare Arduino instalat.
+2. Instalați Bibliotecile: Descărcați și instalați bibliotecile Keypad, MFRC522 și LiquidCrystal_I2C (și celelalte dacă sunt necesare pentru configurația completă a sistemului dvs.) prin Managerul de Biblioteci din Arduino IDE. 
+3. Conectați Hardware-ul: Realizați conexiunile conform schemei electrice (Fritzing).
+4. Încărcați Codul: Copiați codul sursă în Arduino IDE și încărcați-l pe placa Arduino Plusivo.
+5. Monitor Serial: Deschideți Monitorul Serial în Arduino IDE (cu baud rate 9600) pentru a vizualiza mesajele de sistem și starea interfonului.
+6. Interacțiune: Sistemul este activat la pornire. Puteți introduce un cod PIN (implicit 1234) sau utiliza un card RFID autorizat pentru a testa accesul. 
 
 ---
 
