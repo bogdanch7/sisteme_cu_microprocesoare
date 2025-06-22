@@ -35,21 +35,15 @@ Montajul oferă următoarele funcționalități cheie:
 
 ## Schema Electrică și Conexiuni
 
-Conexiunile principale între componente sunt următoarele: 
+- Conexiunile principale între componente sunt următoarele: 
+- Arduino - Tastatură Matriceală: Rândurile și coloanele tastaturii sunt conectate la pinii digitali ai Arduino-ului. 
+- Arduino - Modul RFID RC522: Pinul SDA al modulului RFID este conectat la pinul digital 10 al Arduino-ului. Pinii SCK, MOSI, MISO și RST sunt conectați conform specificațiilor SPI (la pinii 13, 11, 12, respectiv 9). 
+- Arduino - Buzzer: Conectat la un pin digital al Arduino-ului (pinul 5 în cod). 
+- Arduino - LED-uri: Conectate la pini digitali (verde la pin 3, albastru la pin 4) prin rezistențe de 220 ohmi. 
+- Arduino - Senzor PIR: Conectat la un pin digital al Arduino-ului pentru detectarea mișcării. 
+- Alimentare: Arduino este alimentat prin portul USB, iar toate celelalte componente sunt alimentate din aceeași sursă. 
 
-Arduino - Tastatură Matriceală: Rândurile și coloanele tastaturii sunt conectate la pinii digitali ai Arduino-ului. 
-
-Arduino - Modul RFID RC522: Pinul SDA al modulului RFID este conectat la pinul digital 10 al Arduino-ului. Pinii SCK, MOSI, MISO și RST sunt conectați conform specificațiilor SPI (la pinii 13, 11, 12, respectiv 9). 
-
-Arduino - Buzzer: Conectat la un pin digital al Arduino-ului (pinul 5 în cod). 
-
-Arduino - LED-uri: Conectate la pini digitali (verde la pin 3, albastru la pin 4) prin rezistențe de 220 ohmi. 
-
-Arduino - Senzor PIR: Conectat la un pin digital al Arduino-ului pentru detectarea mișcării. 
-
-Alimentare: Arduino este alimentat prin portul USB, iar toate celelalte componente sunt alimentate din aceeași sursă. 
-
-- O schemă vizuală a montajului este disponibilă în documentația originală (schema Fritzing). 
+O schemă vizuală a montajului este disponibilă în documentația originală (schema Fritzing). 
 
 ---
 
