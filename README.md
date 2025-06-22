@@ -23,19 +23,12 @@ Montajul oferă următoarele funcționalități cheie:
 ## Componente Hardware Utilizate
 
 - Microcontroler Arduino Plusivo: Placa principală de control care gestionează toate input-urile de la tastatură, RFID și senzorul PIR, controlând totodată LED-urile și buzzer-ul. 
-
 - Tastatură Matriceală 4x4: Utilizată pentru introducerea codului de acces. Este conectată la Arduino prin 8 pini digitali. 
-
 - Modul RFID RC522: Cititor/scriitor RFID care comunică prin protocolul SPI și operează la 13.56MHz. Acesta citește UID-urile cardurilor și le trimite către Arduino pentru verificare. 
-
 - Buzzer: Oferă feedback sonor rapid pentru diverse evenimente, cum ar fi apăsările de taste sau rezultatul autentificării. 
-
 - LED-uri (Verde și Albastru): Semnalizează vizual statusul sistemului (acces permis/respins).  Protejate de rezistențe. 
-
 - Senzor PIR HW416: Detectează mișcarea și prezența, activând/dezactivând funcționalitățile sistemului. 
-
 - Breadboard: Placă de prototipare pentru montajul temporar al componentelor și realizarea rapidă a circuitului. 
-
 - LCD 16x2 (cu modul I2C): (Vizibil în schema Fritzing) utilizat pentru afișarea locală a mesajelor și stărilor sistemului. 
 
 ---
