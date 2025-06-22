@@ -1,16 +1,16 @@
-## Sistem de Interfon cu Autentificare RFID și Tastatură
+# Sistem de Interfon cu Autentificare RFID și Tastatură
 
 Acest proiect implementează un sistem de interfon bazat pe un microcontroler Arduino, conceput pentru a permite autentificarea utilizatorilor prin multiple metode și a oferi feedback vizual și sonor. Sistemul integrează o tastatură matriceală, un cititor RFID și un senzor de mișcare PIR pentru o securitate și funcționalitate sporite. 
 
 ---
 
-# Scopul Proiectului
+## Scopul Proiectului
 
 Scopul principal al acestui proiect este de a crea un sistem de interfon cu capabilități de autentificare avansate, oferind o soluție de control acces care utilizează atât metode tradiționale (PIN), cât și moderne (RFID), cu monitorizare a prezenței. 
 
 ---
 
-# Descriere Generală și Funcționalități
+## Descriere Generală și Funcționalități
 
 Montajul oferă următoarele funcționalități cheie:
 - Autentificare prin RFID: Utilizatorii pot deschide sistemul folosind o cartelă de acces sau un tag RFID, al cărui UID este comparat cu o listă predefinită de carduri autorizate. 
@@ -37,6 +37,8 @@ Senzor PIR HW416: Detectează mișcarea și prezența, activând/dezactivând fu
 Breadboard: Placă de prototipare pentru montajul temporar al componentelor și realizarea rapidă a circuitului. 
 
 LCD 16x2 (cu modul I2C): (Vizibil în schema Fritzing) utilizat pentru afișarea locală a mesajelor și stărilor sistemului. 
+
+---
 
 ## Schema Electrică și Conexiuni
 
