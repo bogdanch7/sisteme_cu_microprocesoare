@@ -44,6 +44,7 @@ Montajul oferă următoarele funcționalități cheie:
 - Alimentare: Arduino este alimentat prin portul USB, iar toate celelalte componente sunt alimentate din aceeași sursă. 
 
 O schemă vizuală a montajului este disponibilă în documentația originală (schema Fritzing). 
+![fritzing](https://github.com/user-attachments/assets/d795d6ec-bb5f-4726-afc8-8bc5797bcf3d)
 
 ---
 
