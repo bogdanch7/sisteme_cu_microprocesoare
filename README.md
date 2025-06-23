@@ -88,7 +88,7 @@ Programul implementează următoarele funcționalități logice:
 
 ## Realizat de
 
-Proiect realizat de bogdanch7 [bogdanch7](https://github.com/bogdanch7)
+Proiect realizat de [bogdanch7](https://github.com/bogdanch7)
 
 An universitar 2024–2025
 
