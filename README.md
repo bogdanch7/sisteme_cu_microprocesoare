@@ -52,6 +52,195 @@ O schemă vizuală detaliată a montajului este disponibilă mai jos, realizată
 
 Codul este scris în limbajul Arduino (C/C++) și utilizează mai multe biblioteci pentru a interacționa cu componentele hardware.
 
+#include <Keypad.h>          // Include biblioteca Keypad pentru tastatura matriceală
+#include <SPI.h>             // Include biblioteca SPI pentru comunicarea cu modulul RFID
+#include <MFRC522.h>         // Include biblioteca MFRC522 pentru cititorul RFID
+#include <LiquidCrystal_I2C.h> // Include biblioteca pentru controlul LCD I2C
+
+#define SS_PIN 10            // Definește pinul Slave Select (SS) pentru modulul RFID
+#define RST_PIN 9            // Definește pinul Reset (RST) pentru modulul RFID
+
+// Creează o instanță a clasei MFRC522, specificând pinii SS și RST
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+// Creează o instanță a clasei LiquidCrystal_I2C pentru LCD
+// (adresa I2C, număr coloane, număr rânduri - adresa tipică 0x27)
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+const byte ROWS = 4;         // Definește numărul de rânduri al tastaturii
+const byte COLS = 4;         // Definește numărul de coloane al tastaturii
+
+// Definește layout-ul tastaturii (caracterele asociate fiecărui buton)
+char keys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+
+// Definește pinii Arduino conectați la rândurile tastaturii
+byte rowPins[ROWS] = {8, 7, 6, 5};
+// Definește pinii Arduino conectați la coloanele tastaturii
+byte colPins[COLS] = {4, 3, 2, 1};
+
+// Creează o instanță a clasei Keypad, utilizând layout-ul și pinii definiți
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+// Definește pinii pentru LED-uri și Buzzer
+const int greenLed = 3;      // Pinul pentru LED-ul Verde (Acces Permis)
+const int blueLed = 4;       // Pinul pentru LED-ul Albastru (Acces Respins)
+const int buzzer = 5;        // Pinul pentru Buzzer
+const int pirPin = 2;        // Pinul pentru senzorul PIR (detecție mișcare)
+
+String correctCode = "1234"; // Codul de acces corect (ex: PIN)
+String inputCode = "";       // Variabila pentru stocarea codului introdus de utilizator
+
+// UID-ul (Unique ID) unei cartele RFID autorizate (exemplu)
+// Acesta este UID-ul cartelei care va permite accesul
+byte authorizedCard1[4] = {0x03, 0x9F, 0x94, 0x9A};
+
+void setup() {
+  Serial.begin(9600);        // Inițializează comunicarea serială la 9600 bps
+  SPI.begin();               // Inițializează bus-ul SPI (necesar pentru RFID)
+  mfrc522.PCD_Init();        // Inițializează modulul RFID MFRC522
+  lcd.init();                // Inițializează LCD-ul
+  lcd.backlight();           // Pornește iluminarea de fundal a LCD-ului
+
+  // Setează pinii LED-urilor și buzzer-ului ca OUTPUT
+  pinMode(greenLed, OUTPUT);
+  pinMode(blueLed, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  // Setează pinul senzorului PIR ca INPUT
+  pinMode(pirPin, INPUT);
+
+  // Afișează un mesaj inițial pe LCD
+  lcd.print("System Ready!");
+  delay(2000);               // Așteaptă 2 secunde
+  lcd.clear();               // Șterge conținutul LCD-ului
+}
+
+void loop() {
+  // Verifică starea senzorului PIR
+  int pirState = digitalRead(pirPin);
+  if (pirState == HIGH) {    // Dacă se detectează mișcare
+    Serial.println("Motion Detected!"); // Afișează pe monitorul serial
+    lcd.setCursor(0, 0);     // Setează cursorul LCD la rândul 0, coloana 0
+    lcd.print("Motion Detected!"); // Afișează mesaj pe LCD
+    // Aici se pot adăuga acțiuni specifice la detectarea mișcării (ex: activare sistem)
+  } else {
+    // Dacă nu se detectează mișcare, sistemul poate intra într-o stare de repaus
+    // sau de consum redus de energie (nu este implementat detaliat aici)
+  }
+
+  // Citește tasta apăsată de pe tastatură
+  char key = keypad.getKey();
+
+  if (key) {                 // Dacă o tastă este apăsată
+    Serial.print("Tasta apasata: "); // Afișează pe monitorul serial
+    Serial.println(key);
+    lcd.setCursor(0, 0);     // Afișează tasta apăsată pe LCD
+    lcd.print("Tasta: ");
+    lcd.print(key);
+
+    if (key == '#') {        // Dacă tasta '#' este apăsată (confirmare cod)
+      Serial.print("Cod introdus: "); // Afișează codul introdus
+      Serial.println(inputCode);
+      lcd.setCursor(0, 1);   // Afișează codul introdus pe rândul 1 al LCD-ului
+      lcd.print("Cod: ");
+      lcd.print(inputCode);
+
+      if (inputCode == correctCode) { // Compară codul introdus cu cel corect
+        allowAccess("Cod corect!"); // Dacă este corect, permite accesul
+      } else {
+        denyAccess("Cod gresit!"); // Dacă este greșit, refuză accesul
+      }
+      inputCode = "";        // Resetează variabila pentru următorul cod
+    } else if (key == '*') { // Dacă tasta '*' este apăsată (resetare cod)
+      inputCode = "";        // Golește codul introdus
+      Serial.println("Cod resetat."); // Afișează mesaj de resetare
+      lcd.clear();           // Șterge LCD-ul
+      lcd.print("Cod resetat."); // Afișează mesaj de resetare pe LCD
+      delay(1000);           // Așteaptă 1 secundă
+      lcd.clear();           // Șterge LCD-ul
+    } else {
+      inputCode += key;      // Adaugă tasta apăsată la codul introdus
+    }
+  }
+
+  // Verifică modulul RFID pentru o nouă cartelă prezentă și îi citește UID-ul
+  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()) {
+    Serial.print("Card detectat: ");
+    String cardUid = "";
+    // Parcurge și afișează fiecare octet al UID-ului cartelei detectate
+    for (byte i = 0; i < mfrc522.uid.size; i++) {
+      Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "); // Formatează pentru afișare
+      Serial.print(mfrc522.uid.uidByte[i], HEX); // Afișează octetul în format HEX
+      cardUid += String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""); // Construiește string-ul UID
+      cardUid += String(mfrc522.uid.uidByte[i], HEX);
+    }
+    Serial.println();
+    Serial.print("Card UID: ");
+    Serial.println(cardUid);
+
+    lcd.setCursor(0, 0);     // Afișează mesaj de detectare card pe LCD
+    lcd.print("Card detectat!");
+    lcd.setCursor(0, 1);     // Afișează UID-ul cardului pe LCD (parțial, dacă este lung)
+    lcd.print("UID: ");
+    lcd.print(cardUid.substring(0, 8));
+
+    // Compară UID-ul cartelei detectate cu UID-ul autorizat
+    if (compareRFID(mfrc522.uid.uidByte, authorizedCard1)) {
+      allowAccess("Card autorizat!"); // Dacă este autorizat, permite accesul
+    } else {
+      denyAccess("Card neautorizat!"); // Dacă nu este autorizat, refuză accesul
+    }
+
+    mfrc522.PICC_HaltA();    // Oprește PICC (Proximity Integrated Circuit Card)
+    mfrc522.PCD_StopCrypto1(); // Oprește criptarea pe PCD (Proximity Coupling Device)
+  }
+}
+
+// Funcție pentru a semnala acces permis
+void allowAccess(String message) {
+  digitalWrite(greenLed, HIGH); // Aprinde LED-ul verde
+  digitalWrite(blueLed, LOW);   // Asigură că LED-ul albastru este stins
+  tone(buzzer, 1000);           // Generează un ton la buzzer (1000 Hz)
+  Serial.println(message + " Acces permis."); // Afișează mesaj pe serial
+  lcd.clear();                  // Șterge LCD-ul
+  lcd.print(message);           // Afișează mesajul pe LCD
+  lcd.setCursor(0, 1);
+  lcd.print("Acces permis.");
+  delay(3000);                  // Așteaptă 3 secunde
+  noTone(buzzer);               // Oprește tonul buzzer-ului
+  digitalWrite(greenLed, LOW);  // Stinge LED-ul verde
+  lcd.clear();                  // Șterge LCD-ul
+}
+
+// Funcție pentru a semnala acces refuzat
+void denyAccess(String message) {
+  digitalWrite(blueLed, HIGH);  // Aprinde LED-ul albastru
+  digitalWrite(greenLed, LOW);  // Asigură că LED-ul verde este stins
+  tone(buzzer, 500);            // Generează un ton la buzzer (500 Hz)
+  Serial.println(message + " Acces refuzat."); // Afișează mesaj pe serial
+  lcd.clear();                  // Șterge LCD-ul
+  lcd.print(message);           // Afișează mesajul pe LCD
+  lcd.setCursor(0, 1);
+  lcd.print("Acces refuzat.");
+  delay(3000);                  // Așteaptă 3 secunde
+  noTone(buzzer);               // Oprește tonul buzzer-ului
+  digitalWrite(blueLed, LOW);   // Stinge LED-ul albastru
+  lcd.clear();                  // Șterge LCD-ul
+}
+
+// Funcție pentru a compara două UID-uri RFID
+bool compareRFID(byte* uid1, byte* uid2) {
+  for (byte i = 0; i < 4; i++) { // Compară octet cu octet (presupunând UID de 4 octeți)
+    if (uid1[i] != uid2[i]) {    // Dacă orice octet nu corespunde
+      return false;              // Returnează fals (UID-uri diferite)
+    }
+  }
+  return true;                   // Dacă toți octeții corespund, returnează adevărat (UID-uri identice)
+}
+
 ---
 
 ## Biblioteci Utilizate
