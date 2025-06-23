@@ -183,9 +183,9 @@ void loop() {
 
     lcd.setCursor(0, 0);     // Afișează mesaj de detectare card pe LCD
     lcd.print("Card detectat!");
-    lcd.setCursor(0, 1);     // Afișează UID-ul cardului pe LCD (parțial, dacă este lung)
+    lcd.setCursor(0, 1);     // Afișează UID-ul cardului pe rândul 1 al LCD-ului (parțial, dacă este lung)
     lcd.print("UID: ");
-    lcd.print(cardUid.substring(0, 8));
+    lcd.print(cardUid.substring(0, 8)); // Afișează doar primele 8 caractere ale UID-ului
 
     // Compară UID-ul cartelei detectate cu UID-ul autorizat
     if (compareRFID(mfrc522.uid.uidByte, authorizedCard1)) {
@@ -204,7 +204,7 @@ void allowAccess(String message) {
   digitalWrite(greenLed, HIGH); // Aprinde LED-ul verde
   digitalWrite(blueLed, LOW);   // Asigură că LED-ul albastru este stins
   tone(buzzer, 1000);           // Generează un ton la buzzer (1000 Hz)
-  Serial.println(message + " Acces permis."); // Afișează mesaj pe serial
+  Serial.println(message + " Acces permis."); // Afișează mesaj pe monitorul serial
   lcd.clear();                  // Șterge LCD-ul
   lcd.print(message);           // Afișează mesajul pe LCD
   lcd.setCursor(0, 1);
@@ -220,7 +220,7 @@ void denyAccess(String message) {
   digitalWrite(blueLed, HIGH);  // Aprinde LED-ul albastru
   digitalWrite(greenLed, LOW);  // Asigură că LED-ul verde este stins
   tone(buzzer, 500);            // Generează un ton la buzzer (500 Hz)
-  Serial.println(message + " Acces refuzat."); // Afișează mesaj pe serial
+  Serial.println(message + " Acces refuzat."); // Afișează mesaj pe monitorul serial
   lcd.clear();                  // Șterge LCD-ul
   lcd.print(message);           // Afișează mesajul pe LCD
   lcd.setCursor(0, 1);
