@@ -248,7 +248,6 @@ bool compareRFID(byte* uid1, byte* uid2) {
 - SPI.h: Pentru comunicarea cu modulul RFID. 
 - MFRC522.h: Pentru comunicarea cu modulul RFID RC522. 
 - LiquidCrystal_I2C.h: Pentru controlul afișajului LCD 16x2.
-Adafruit BusIO.h, Adafruit LiquidCrystal.h, Adafruit MCP23017.h: Biblioteci auxiliare pentru comunicarea I2C/SPI și controlul LCD/expandoarelor GPIO, dacă sunt utilizate. 
 
 ---
 
