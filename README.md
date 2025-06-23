@@ -43,7 +43,7 @@ Montajul oferă următoarele funcționalități cheie:
 - Arduino - Senzor PIR: Conectat la un pin digital al Arduino-ului pentru detectarea mișcării. 
 - Alimentare: Arduino este alimentat prin portul USB, iar toate celelalte componente sunt alimentate din aceeași sursă. 
 
-O schemă vizuală a montajului este disponibilă în documentația originală (schema Fritzing). 
+O schemă vizuală detaliată a montajului este disponibilă mai jos, realizată în Fritzing:
 ![fritzing](https://github.com/user-attachments/assets/d795d6ec-bb5f-4726-afc8-8bc5797bcf3d)
 
 ---
